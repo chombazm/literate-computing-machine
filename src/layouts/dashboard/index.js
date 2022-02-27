@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 //
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 
+import useAuth from '../../hooks/useAuthentication';
 // ----------------------------------------------------------------------
 
 const APP_BAR_MOBILE = 64;
@@ -34,6 +35,12 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const { isAuth } = useAuth();
+  if (!isAuth) {
+    navigate('/login');
+  }
 
   return (
     <RootStyle>

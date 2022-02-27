@@ -1,9 +1,12 @@
 // scroll bar
 import 'simplebar/src/simplebar.css';
 
+import { SnackbarProvider } from 'notistack';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 //
 import App from './App';
@@ -13,11 +16,15 @@ import reportWebVitals from './reportWebVitals';
 // ----------------------------------------------------------------------
 
 ReactDOM.render(
-  <HelmetProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </HelmetProvider>,
+  <Provider store={store}>
+    <HelmetProvider>
+      <BrowserRouter>
+        <SnackbarProvider maxSnack={3} autoHideDuration={2000}>
+          <App />
+        </SnackbarProvider>
+      </BrowserRouter>
+    </HelmetProvider>
+  </Provider>,
   document.getElementById('root')
 );
 

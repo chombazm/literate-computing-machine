@@ -1,6 +1,7 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
+import useAuth from '../hooks/useAuthentication';
 // components
 import Logo from '../components/Logo';
 
@@ -21,6 +22,12 @@ const HeaderStyle = styled('header')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LogoOnlyLayout() {
+  const navigate = useNavigate();
+  const { isAuth } = useAuth();
+  console.log(isAuth, 'check authentication');
+  if (isAuth) {
+    navigate('/dashboard/app');
+  }
   return (
     <>
       <HeaderStyle>
