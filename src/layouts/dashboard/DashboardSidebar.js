@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
 // material
 import { styled } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
@@ -15,6 +17,7 @@ import NavSection from '../../components/NavSection';
 //
 import sidebarConfig from './SidebarConfig';
 
+import { logout } from '../../store/reducers/loginSlice';
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;
@@ -43,9 +46,17 @@ DashboardSidebar.propTypes = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
-
+  const { user } = useSelector((state) => state.login);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isDesktop = useResponsive('up', 'lg');
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('tukuya_access_token');
+    localStorage.removeItem('tukuya_admin');
+    dispatch(logout());
+    navigate('/login');
+  };
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();
@@ -70,10 +81,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {user?.name}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+                {user.role}
               </Typography>
             </Box>
           </AccountStyle>
@@ -105,7 +116,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             </Typography>
           </Box>
 
-          <Button href="/login" target="_blank" variant="contained">
+          <Button onClick={handleLogout} variant="contained">
             Logout
           </Button>
         </Stack>

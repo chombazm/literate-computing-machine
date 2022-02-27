@@ -13,15 +13,20 @@ import {
   FormControlLabel
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { useSelector, useDispatch } from 'react-redux';
 // component
+import { useSnackbar } from 'notistack';
 import Iconify from '../../../components/Iconify';
-
+import { loginStart, loginSuccess, loginFailure } from '../../../store/reducers/loginSlice';
+import * as api from '../../../api/authentication';
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
+  const dispatch = useDispatch();
+  const { isLoadingLogin } = useSelector((state) => state.login);
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required')
@@ -34,12 +39,36 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: async () => {
+      dispatch(loginStart());
+      const { email, password } = values;
+      try {
+        const data = await api.login({ email, password });
+        // login success call
+        const { tokens } = data;
+        sessionStorage.setItem('tukuya_access_token', tokens.access.token);
+        const user = {
+          user: data.user,
+          refreshToken: tokens.refresh.token
+        };
+        localStorage.setItem('tukuya_admin', JSON.stringify(user));
+        dispatch(loginSuccess(user.user));
+
+        enqueueSnackbar(`Welcome ${data.user.name}`, {
+          variant: 'success'
+        });
+        navigate('/dashboard/app', { replace: true });
+      } catch (error) {
+        dispatch(loginFailure(error.response.data.message));
+        enqueueSnackbar(`Opps! ${error.response.data.message}`, {
+          variant: 'error'
+        });
+      }
+      // navigate('/dashboard', { replace: true });
     }
   });
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, values, handleSubmit, getFieldProps } = formik;
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
@@ -95,7 +124,7 @@ export default function LoginForm() {
           size="large"
           type="submit"
           variant="contained"
-          loading={isSubmitting}
+          loading={isLoadingLogin}
         >
           Login
         </LoadingButton>
