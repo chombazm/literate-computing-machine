@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+
 // material
 import { styled } from '@mui/material/styles';
 //
@@ -37,8 +38,12 @@ export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { isAuth } = useAuth();
+  const isAuth = useAuth();
+  console.log(isAuth, 'Check use auth');
   if (!isAuth) {
+    // <Redirect to="/login" />;
+
+    console.log('Not auth');
     navigate('/login');
   }
 

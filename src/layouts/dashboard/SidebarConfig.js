@@ -23,7 +23,7 @@ const sidebarConfig = [
   },
   {
     title: 'Transactions',
-    path: '/dashboard/products',
+    path: '/dashboard/transactions',
     icon: getIcon('eva:shopping-bag-fill')
   }
   // {
