@@ -1,13 +1,15 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
+// import { Identity } from '@mui/base';
+
 // material
 import {
   Card,
   Table,
   Stack,
-  Avatar,
+  // Avatar,
   // Button,
   Checkbox,
   TableRow,
@@ -25,17 +27,18 @@ import Scrollbar from '../components/Scrollbar';
 // import Iconify from '../components/Iconify';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
+import * as api from '../api/authentication';
 
-import USERLIST from '../_mocks_/user';
+// import USERLIST from '../_mocks_/user';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'User', label: 'Driver', alignRight: false },
-  { id: 'Driver', label: 'User', alignRight: false },
-  { id: 'Route', label: 'Provider', alignRight: false },
-  { id: 'Date paid', label: 'Date', alignRight: false },
-  { id: 'Status', label: 'Status', alignRight: false },
+  { id: 'id', label: 'id', alignRight: false },
+  { id: 'provider', label: 'Provider', alignRight: false },
+  { id: 'amount', label: 'Amount', alignRight: false },
+  { id: 'phoneNumber', label: 'Phone number', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
 
@@ -65,7 +68,10 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(
+      array,
+      (_user) => _user.externalId.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    );
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -77,6 +83,14 @@ export default function Transactions() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [transactions, setTransactions] = useState([]);
+
+  const fetchDocuments = async () => {
+    const transactionsFromServer = await api.getTransactions();
+    setTransactions(transactionsFromServer.transactions);
+    // setUSERLIST(documentsFromServer);
+    console.log(transactionsFromServer, 'getting transactions document state');
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -86,7 +100,7 @@ export default function Transactions() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = transactions.map((n) => n.externalId);
       setSelected(newSelecteds);
       return;
     }
@@ -124,12 +138,14 @@ export default function Transactions() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - transactions.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(transactions, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
-
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
   return (
     <Page title="Transactions | Tukuya">
       <Container>
@@ -161,7 +177,7 @@ export default function Transactions() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={transactions.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -169,9 +185,9 @@ export default function Transactions() {
                 <TableBody>
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                    .map((transactions) => {
+                      const { externalId: id, gateway, status, amount, phoneNumber } = transactions;
+                      const isItemSelected = selected.indexOf(id) !== -1;
 
                       return (
                         <TableRow
@@ -185,20 +201,20 @@ export default function Transactions() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
-                              onChange={(event) => handleClick(event, name)}
+                              onChange={(event) => handleClick(event, id)}
                             />
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={avatarUrl} />
+                              {/* <Avatar alt={name} src={avatarUrl} /> */}
                               <Typography variant="subtitle2" noWrap>
-                                {name}
+                                {id}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                          <TableCell align="left">{gateway}</TableCell>
+                          <TableCell align="left">K {amount}.00</TableCell>
+                          <TableCell align="left">{phoneNumber}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
@@ -236,7 +252,7 @@ export default function Transactions() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={transactions.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

@@ -22,4 +22,4 @@ export const login = (credenetials) =>
 //     })
 //     .then((res) => res.data);
 
-// export const getDocuments = () => api.get('/admin/documents').then((res) => res.data);
+export const getTransactions = () => api.get('/payments/transactions').then((res) => res.data);

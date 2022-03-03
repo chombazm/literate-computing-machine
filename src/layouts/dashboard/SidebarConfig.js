@@ -18,7 +18,7 @@ const sidebarConfig = [
   },
   {
     title: 'Drivers',
-    path: '/dashboard/blog',
+    path: '/dashboard/drivers',
     icon: getIcon('eva:people-fill')
   },
   {

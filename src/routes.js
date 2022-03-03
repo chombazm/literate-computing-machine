@@ -7,7 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardApp from './pages/DashboardApp';
 import Transactions from './pages/Transactions';
-import Blog from './pages/Blog';
+import Drivers from './pages/Drivers';
 import User from './pages/User';
 import NotFound from './pages/Page404';
 
@@ -22,7 +22,7 @@ export default function Router() {
         { path: 'app', element: <DashboardApp /> },
         { path: 'user', element: <User /> },
         { path: 'transactions', element: <Transactions /> },
-        { path: 'blog', element: <Blog /> }
+        { path: 'drivers', element: <Drivers /> }
       ]
     },
     {
