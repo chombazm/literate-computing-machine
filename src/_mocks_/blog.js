@@ -4,9 +4,9 @@ import { mockImgCover } from '../utils/mockImages';
 
 // ----------------------------------------------------------------------
 
-const POST_TITLES = [];
+const POST_TITLES = ['Mathews banda', 'Mathews banda'];
 
-const posts = [...Array(6)].map((_, index) => ({
+const posts = [...Array(23)].map((_, index) => ({
   id: faker.datatype.uuid(),
   cover: mockImgCover(index + 1),
   title: POST_TITLES[index + 1],
@@ -16,10 +16,9 @@ const posts = [...Array(6)].map((_, index) => ({
   share: faker.datatype.number(),
   favorite: faker.datatype.number(),
   author: {
-    name: faker.name.findName(),
+    name: 'Mathews Banda',
     avatarUrl: `/static/mock-images/avatars/avatar_17.jpg`
   }
 }));
 
-const emptyPosts = [];
-export default emptyPosts;
+export default posts;

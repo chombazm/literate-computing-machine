@@ -5,10 +5,10 @@ import Page from '../components/Page';
 import {
   // AppTasks,
   AppNewUsers,
-  AppBugReports,
+  AppTransactionsReport,
   AppItemOrders,
   // AppNewsUpdate,
-  AppWeeklySales
+  AppAccountBalance
   // AppOrderTimeline,
   // AppCurrentVisits,
   // AppWebsiteVisits,
@@ -28,16 +28,16 @@ export default function DashboardApp() {
         </Box>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWeeklySales />
+            <AppAccountBalance />
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <AppTransactionsReport />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <AppNewUsers />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <AppItemOrders />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <AppBugReports />
           </Grid>
 
           {/* <Grid item xs={12} md={6} lg={8}>

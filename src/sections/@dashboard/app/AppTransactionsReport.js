@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 // material
 import { alpha, styled } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
@@ -7,6 +9,8 @@ import { fShortenNumber } from '../../../utils/formatNumber';
 import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
+
+import * as api from '../../../api/authentication';
 
 const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: 'none',
@@ -34,15 +38,26 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const TOTAL = 234323;
+// const TOTAL = 234323;
 
-export default function AppBugReports() {
+export default function AppTransactionsReport() {
+  const [total, setTotal] = useState(null);
+  const fetchTotalTransactions = async () => {
+    const transactionsFromServer = await api.getTransactions();
+    setTotal(transactionsFromServer.transactions.length);
+    // setUSERLIST(documentsFromServer);
+    // console.log(transactionsFromServer, 'getting transactions document state');
+  };
+  useEffect(() => {
+    fetchTotalTransactions();
+  }, [total]);
   return (
     <RootStyle>
       <IconWrapperStyle>
-        <Iconify icon="ant-design:bug-filled" width={24} height={24} />
+        {/* <Iconify icon="ant-design:bug-filled" width={24} height={24} /> */}
       </IconWrapperStyle>
-      <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
+
+      <Typography variant="h3">{total && fShortenNumber(total)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         Total transactions
       </Typography>

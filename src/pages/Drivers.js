@@ -43,8 +43,8 @@ export default function Blog() {
         </Stack>
 
         <Grid container spacing={3}>
-          {POSTS.map((post, index) => (
-            <BlogPostCard key={post.id} post={post} index={index} />
+          {POSTS.map((post) => (
+            <BlogPostCard key={post.id} post={post} />
           ))}
         </Grid>
       </Container>

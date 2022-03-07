@@ -14,11 +14,11 @@ import Iconify from '../../../components/Iconify';
 
 const CardMediaStyle = styled('div')({
   position: 'relative',
-  paddingTop: 'calc(100% * 3 / 4)'
+  paddingTop: 'calc(40% * 3 / 4)'
 });
 
 const TitleStyle = styled(Link)({
-  height: 44,
+  height: 34,
   overflow: 'hidden',
   WebkitLineClamp: 2,
   display: '-webkit-box',
@@ -38,14 +38,14 @@ const InfoStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
   justifyContent: 'flex-end',
-  marginTop: theme.spacing(3),
+  marginTop: theme.spacing(1),
   color: theme.palette.text.disabled
 }));
 
 const CoverImgStyle = styled('img')({
   top: 0,
   width: '100%',
-  height: '100%',
+  height: '70px',
   objectFit: 'cover',
   position: 'absolute'
 });
@@ -73,25 +73,27 @@ export default function BlogPostCard({ post, index }) {
     <Grid item xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
       <Card sx={{ position: 'relative' }}>
         <CardMediaStyle
-          sx={{
-            ...((latestPostLarge || latestPost) && {
-              pt: 'calc(100% * 4 / 3)',
-              '&:after': {
-                top: 0,
-                content: "''",
-                width: '100%',
-                height: '100%',
-                position: 'absolute',
-                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72)
-              }
-            }),
-            ...(latestPostLarge && {
-              pt: {
-                xs: 'calc(100% * 4 / 3)',
-                sm: 'calc(100% * 3 / 4.66)'
-              }
-            })
-          }}
+          sx={
+            {
+              // ...((latestPostLarge || latestPost) && {
+              //   pt: 'calc(100% * 4 / 3)',
+              //   '&:after': {
+              //     top: 0,
+              //     content: "''",
+              //     width: '100%',
+              //     height: '100%',
+              //     position: 'absolute',
+              //     bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72)
+              //   }
+              // }),
+              // ...(latestPostLarge && {
+              //   pt: {
+              //     xs: 'calc(100% * 4 / 3)',
+              //     sm: 'calc(100% * 3 / 4.66)'
+              //   }
+              // })
+            }
+          }
         >
           <SvgIconStyle
             color="paper"
@@ -119,7 +121,7 @@ export default function BlogPostCard({ post, index }) {
             }}
           />
 
-          <CoverImgStyle alt={title} src={cover} />
+          <CoverImgStyle alt={title} src={cover} height="100" />
         </CardMediaStyle>
 
         <CardContent
@@ -153,7 +155,7 @@ export default function BlogPostCard({ post, index }) {
               })
             }}
           >
-            {title}
+            {author.name}
           </TitleStyle>
 
           <InfoStyle>

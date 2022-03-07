@@ -37,8 +37,10 @@ const TABLE_HEAD = [
   { id: 'id', label: 'id', alignRight: false },
   { id: 'provider', label: 'Provider', alignRight: false },
   { id: 'amount', label: 'Amount', alignRight: false },
+  { id: 'type', label: 'Type', alignRight: false },
   { id: 'phoneNumber', label: 'Phone number', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
+  { id: 'date', label: 'Date', alignRight: false },
   { id: '' }
 ];
 
@@ -186,7 +188,15 @@ export default function Transactions() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((transactions) => {
-                      const { externalId: id, gateway, status, amount, phoneNumber } = transactions;
+                      const {
+                        externalId: id,
+                        gateway,
+                        status,
+                        amount,
+                        type,
+                        phoneNumber,
+                        dateCreated
+                      } = transactions;
                       const isItemSelected = selected.indexOf(id) !== -1;
 
                       return (
@@ -213,16 +223,19 @@ export default function Transactions() {
                             </Stack>
                           </TableCell>
                           <TableCell align="left">{gateway}</TableCell>
-                          <TableCell align="left">K {amount}.00</TableCell>
+                          <TableCell align="left">K{amount}.00</TableCell>
+                          <TableCell align="left">{type}</TableCell>
                           <TableCell align="left">{phoneNumber}</TableCell>
                           <TableCell align="left">
                             <Label
                               variant="ghost"
+                              // color={status === 'SUCCESS' ? 'success' : 'banned'}
                               color={(status === 'banned' && 'error') || 'success'}
                             >
                               {sentenceCase(status)}
                             </Label>
                           </TableCell>
+                          <TableCell align="left">{dateCreated}</TableCell>
 
                           <TableCell align="right">
                             <UserMoreMenu />
