@@ -4,8 +4,8 @@ import axios from 'axios';
 //   baseURL: 'http://localhost:5000/v1'
 // });
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:3000/v1'
-  // baseURL: 'http://167.99.1.173:3000/v1'
+  // baseURL: 'http://127.0.0.1:3000/v1'
+  baseURL: 'https://tukuyawallet.info/v1/'
 });
 export const login = (credenetials) =>
   api.post('/auth/login', credenetials).then((res) => res.data);
