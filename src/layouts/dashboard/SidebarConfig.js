@@ -18,12 +18,12 @@ const sidebarConfig = [
   },
   {
     title: 'Drivers',
-    path: '/dashboard/blog',
+    path: '/dashboard/drivers',
     icon: getIcon('eva:people-fill')
   },
   {
     title: 'Transactions',
-    path: '/dashboard/products',
+    path: '/dashboard/transactions',
     icon: getIcon('eva:shopping-bag-fill')
   }
   // {
