@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 // material
@@ -38,14 +38,21 @@ export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  const isAuth = useAuth();
-  console.log(isAuth, 'Check use auth');
-  if (!isAuth) {
-    // <Redirect to="/login" />;
+  // const isAuth = useAuth();
+  // console.log(isAuth, 'Check use auth');
+  // if (!isAuth) {
+  //   // <Redirect to="/login" />;
 
-    console.log('Not auth');
-    navigate('/login');
-  }
+  //   console.log('Not auth');
+  //   navigate('/login');
+  // }
+
+  const { isAuth } = useAuth();
+  useEffect(() => {
+    if (!isAuth) {
+      navigate('/login');
+    }
+  }, [isAuth, navigate]);
 
   return (
     <RootStyle>

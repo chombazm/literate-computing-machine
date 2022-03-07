@@ -26,7 +26,7 @@ export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
-  const { isLoadingLogin } = useSelector((state) => state.login);
+  const { isLoading: isLoadingLogin } = useSelector((state) => state.login);
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required')
@@ -73,7 +73,8 @@ export default function LoginForm() {
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
-
+  // console.log(chomba, 'isLoadingLogin');
+  // const isLoadingLogin = true;
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
