@@ -1,7 +1,7 @@
-import { faker } from '@faker-js/faker';
-import { sample } from 'lodash';
-// utils
-import { mockImgAvatar } from '../utils/mockImages';
+// import { faker } from '@faker-js/faker';
+// import { sample } from 'lodash';
+// // utils
+// import { mockImgAvatar } from '../utils/mockImages';
 
 // ----------------------------------------------------------------------
 
