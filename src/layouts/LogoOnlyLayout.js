@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+
 import { Outlet, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
@@ -23,11 +25,18 @@ const HeaderStyle = styled('header')(({ theme }) => ({
 
 export default function LogoOnlyLayout() {
   const navigate = useNavigate();
+  // const { isAuth } = useAuth();
+  // console.log(isAuth, 'check authentication');
+  // if (isAuth) {
+  //   navigate('/dashboard/app');
+  // }
+
   const { isAuth } = useAuth();
-  console.log(isAuth, 'check authentication');
-  if (isAuth) {
-    navigate('/dashboard/app');
-  }
+  useEffect(() => {
+    if (isAuth) {
+      navigate('/dashboard/app');
+    }
+  }, [isAuth, navigate]);
   return (
     <>
       <HeaderStyle>

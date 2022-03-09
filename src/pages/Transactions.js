@@ -195,7 +195,7 @@ export default function Transactions() {
                         amount,
                         type,
                         phoneNumber,
-                        dateCreated
+                        datePaid
                       } = transactions;
                       const isItemSelected = selected.indexOf(id) !== -1;
 
@@ -235,7 +235,7 @@ export default function Transactions() {
                               {sentenceCase(status)}
                             </Label>
                           </TableCell>
-                          <TableCell align="left">{dateCreated}</TableCell>
+                          <TableCell align="left">{datePaid}</TableCell>
 
                           <TableCell align="right">
                             <UserMoreMenu />
